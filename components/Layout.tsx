@@ -30,18 +30,27 @@ export default function Layout({
   noindex,
   jsonLd,
 }: LayoutProps) {
-  const pageTitle = title
+  const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+  const DEMO_TITLE = "Tu web inmobiliaria lista en 48h — sin diseñador ni agencia";
+  const DEMO_DESCRIPTION =
+    "Web con tu marca, dominio propio, fichas PDF, calculadora de hipoteca y leads directos a tu WhatsApp. Sin contratos. Probá la demo →";
+  const DEMO_OG_IMAGE = "/og-48h.png";
+
+  const pageTitle = isDemoMode
+    ? DEMO_TITLE
+    : title
     ? `${title} | ${siteConfig.siteName}`
     : `${siteConfig.siteName} - ${siteConfig.slogan}`;
-  const pageDescription =
-    description ||
-    `Encuentra tu propiedad ideal en ${siteConfig.city}. ${siteConfig.slogan}`;
+  const pageDescription = isDemoMode
+    ? DEMO_DESCRIPTION
+    : description ||
+      `Encuentra tu propiedad ideal en ${siteConfig.city}. ${siteConfig.slogan}`;
 
   const baseUrl = siteConfig.siteUrl.replace(/\/$/, "");
   const canonical = canonicalPath
     ? `${baseUrl}${canonicalPath.startsWith("/") ? canonicalPath : `/${canonicalPath}`}`
     : baseUrl;
-  const ogImage = toAbsoluteUrl(image, baseUrl);
+  const ogImage = toAbsoluteUrl(isDemoMode ? DEMO_OG_IMAGE : image, baseUrl);
 
   return (
     <>
